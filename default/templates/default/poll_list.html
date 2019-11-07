@@ -1,0 +1,19 @@
+{% extends "base.html"%}   
+
+  {% block content %}
+  <h1>投票主題列表</h1>
+  <a href="/poll/create/">新增投票主題</a>
+   <ul>
+     {% for poll in poll_list %}
+    <li>
+       {{ poll.created }} 
+      -<a href="/poll/{{poll.id}}/">{{ poll.subject }}</a>
+      -<a href="/poll/{{ poll.id}}/update/">修改</a>
+    </li>
+    {% endfor%}
+    </ul>
+  {% endblock %}
+
+{% block page_title%}
+投票主題列表
+ {% endblock %}
