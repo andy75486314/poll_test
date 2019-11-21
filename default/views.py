@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
-from django.views.generic import ListView,DetailView,RedirectView,CreateView,UpdateView
+from django.views.generic import ListView,DetailView,RedirectView,CreateView,UpdateView,DeleteView
+from django.urls import reverse
 from .models import *
 
 
@@ -40,3 +41,39 @@ class PollUpdate(UpdateView):
     model=Poll
     fields=['subject']   
     success_url="/poll/"   
+
+class OptionCreate(CreateView):
+    model=Option
+    fields=["title"]
+    template_name ="default/poll_form.html"
+    
+    
+    def get_success_url(self):
+        return reverse("poll_view",args=[self.kwargs["pid"]])
+
+
+    def form_valid(self,form):
+        form.instance.poll_id =self.kwargs["pid"]
+        return super().form_valid(form)
+
+class OptionEdit(UpdateView):
+    model=Option
+    fields=["title","count"]
+    template_name="default/poll_form.html"
+
+    def get_success_url(self):
+        return reverse("poll_view",args=[self.object.poll_id])
+
+
+class OptionDelete(DeleteView):
+    model=Option
+    template_name="confirm_delete.html"
+    def get_success_url(self):
+        return reverse("poll_view",args=[self.object.poll_id])    
+
+class PollDelete(DeleteView):
+    model=Poll
+    template_name='confirm_delete.html'
+    def get_success_url(self):
+       Option.objects.filter(poll_id=self.object.id).delete()
+       return reverse('poll_list')    

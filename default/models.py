@@ -16,4 +16,4 @@ class Option(models.Model):
 
 
     def __str__(self):
-        return str(self.poll_id) + ": " + self.title
+        return str(self.poll_id) + ": " + str(self.poll_id) + ")" +self.title

@@ -2,9 +2,13 @@
  {% block content %}
     <h1>{{poll.subject}}</h1>
     <div>{{poll.created}}</div>
+    <a href="/poll/{{ poll.id }}/create/">新增選項</a>
+    <a href="{% url 'poll_view' poll.id %}">新增選項</a>
 <ul>
     {% for opt in option %}
     <li><a href="/poll/vote/{{ opt.id }}/">{{opt.title}}</a>-{{ opt.count }}票</li>
+    <a href="{% url 'option_edit' opt.id %}">編輯</a>
+    <a href="{% url 'option_delete' opt.id %}">Delete</a>
     {% endfor %}
 </ul>
 {% endblock%}
